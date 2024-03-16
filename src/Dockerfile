@@ -13,7 +13,10 @@ FROM alpine:latest
 WORKDIR /app
 
 COPY --from=build /app/imageconverter .
+COPY --from=build /app/templates ./templates
 
-EXPOSE 5000
+ENV PORT=8080
+
+EXPOSE $PORT
 
 CMD ["./imageconverter"]

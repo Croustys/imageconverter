@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -93,10 +94,14 @@ func getFormat(p string) imgconv.Format {
 
 func main() {
 	http.HandleFunc("/", handler)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("defaulting to port %s", port)
+	}
 
-	log.Println("Server listening on port 5000")
-	err := http.ListenAndServe(":5000", nil)
-	if err != nil {
-		log.Println("Error:", err)
+	log.Printf("listening on port %s", port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatal(err)
 	}
 }
